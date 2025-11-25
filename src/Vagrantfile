@@ -1,0 +1,44 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/jammy64"
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 2048
+    vb.cpus = 2
+  end
+
+  # -----------------------
+  # FSGI Server
+  # -----------------------
+  config.vm.define "fsgi_server" do |fsgi_server|
+    fsgi_server.vm.hostname = "fsgi-server"
+    fsgi_server.vm.network "private_network", ip: "192.168.56.10"
+    fsgi_server.vm.network "forwarded_port", guest: 81, host: 8080   # server ui
+    fsgi_server.vm.network "forwarded_port", guest: 8081, host: 8081  # logs exporter
+    fsgi_server.vm.provider "virtualbox" do |vb|
+      vb.name = "fsgi_server"
+    end
+  end
+
+  # -----------------------
+  # manager_node (рабочий узел)
+  # -----------------------
+  config.vm.define "manager_node" do |manager_node|
+    manager_node.vm.hostname = "ManagerNode"
+    manager_node.vm.network "private_network", ip: "192.168.56.11"
+    manager_node.vm.provider "virtualbox" do |vb|
+      vb.name = "manager_node"
+    end
+    # Установка Ansible
+    manager_node.vm.provision "shell", inline: <<-SHELL
+        UBUNTU_CODENAME=jammy
+        wget -O- "https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=get&search=0x6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367" \
+        | sudo gpg --dearmour -o /usr/share/keyrings/ansible-archive-keyring.gpg
+        echo "deb [signed-by=/usr/share/keyrings/ansible-archive-keyring.gpg] http://ppa.launchpad.net/ansible/ansible/ubuntu $UBUNTU_CODENAME main" \
+        | sudo tee /etc/apt/sources.list.d/ansible.list
+        sudo apt update
+        sudo apt install -y ansible
+    SHELL
+  end
+end

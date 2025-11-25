@@ -1,0 +1,2 @@
+[fsgi]
+192.168.56.10 ansible_ssh_private_key_file=/vagrant/.vagrant/machines/fsgi_server/virtualbox/private_key ansible_ssh_user=vagrant

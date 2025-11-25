@@ -1,0 +1,21 @@
+---
+- name: Копируем bash скрипт экспортера
+  copy:
+    src: log_exporter.sh
+    dest: /usr/local/bin/log_exporter.sh
+    mode: '0755'
+
+- name: Копируем systemd unit для экспортера
+  template:
+    src: log_exporter.service.j2
+    dest: /etc/systemd/system/log_exporter.service
+
+- name: Перезагружаем systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Включаем и запускаем сервис экспортера
+  systemd:
+    name: log_exporter
+    enabled: yes
+    state: started

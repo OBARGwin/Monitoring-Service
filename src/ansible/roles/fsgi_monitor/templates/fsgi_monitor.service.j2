@@ -1,0 +1,12 @@
+[Unit]
+Description=FSGI Container Monitor
+After=network.target docker.service server.service
+Requires=docker.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/fsgi_monitor.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

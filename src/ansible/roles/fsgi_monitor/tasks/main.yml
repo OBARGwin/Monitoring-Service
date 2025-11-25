@@ -1,0 +1,27 @@
+---
+- name: Копируем скрипт мониторинга
+  copy:
+    src: fsgi_monitor.sh
+    dest: /usr/local/bin/fsgi_monitor.sh
+    mode: '0755'
+
+- name: Создаем log-file если его нет
+  file:
+    path: /var/log/fsgi_monitor.log
+    state: touch
+    mode: '0755'
+
+- name: Копируем systemd unit
+  template:
+    src: fsgi_monitor.service.j2
+    dest: /etc/systemd/system/fsgi_monitor.service
+
+- name: Перезагружаем systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Включаем и запускаем сервис мониторинга
+  systemd:
+    name: fsgi_monitor
+    enabled: yes
+    state: started

@@ -1,0 +1,46 @@
+---
+- name: Создаем директорию для Docker (если нужно)
+  file:
+    path: "{{ server_path }}"
+    owner: vagrant
+    group: vagrant
+    state: directory
+
+- name: Копируем Dockerfile
+  copy:
+    src: Dockerfile
+    dest: "{{ server_path }}/Dockerfile"
+    mode: '0644'
+
+- name: Копируем Makefile
+  copy:
+    src: Makefile
+    dest: "{{ server_path }}/Makefile"
+    mode: '0644'
+
+- name: Копируем fastcgi_server.c
+  copy:
+    src: fastcgi_server.c
+    dest: "{{ server_path }}/fastcgi_server.c"
+    mode: '0644'
+
+- name: Копируем nginx.conf
+  copy:
+    src: nginx.conf
+    dest: "{{ server_path }}/nginx.conf"
+    mode: '0644'
+
+- name: Копируем systemd unit для сервера
+  template:
+    src: server.service.j2
+    dest: /etc/systemd/system/server.service
+
+- name: Перезагружаем systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Включаем и запускаем сервис сервера
+  systemd:
+    name: server
+    enabled: yes
+    state: started

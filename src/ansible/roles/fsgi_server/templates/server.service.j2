@@ -1,0 +1,17 @@
+[Unit]
+Description=FastCGI Server Container
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory={{ server_path }}
+ExecStartPre=/usr/bin/docker build -t fastcgi_server .
+ExecStart=/usr/bin/docker run -d --name server -p 81:81 fastcgi_server
+ExecStop=/usr/bin/docker stop server
+ExecStopPost=/usr/bin/docker rm server
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target

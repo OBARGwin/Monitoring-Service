@@ -1,0 +1,40 @@
+---
+- name: Обновление списка пакетов apt
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Установка зависимостей для Docker
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+
+- name: Добавление официального GPG ключа Docker
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Добавление Docker репозитория
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable"
+    state: present
+
+- name: Обновление списка пакетов apt после добавления Docker репозитория
+  apt:
+    update_cache: yes
+
+- name: Установка Docker
+  apt:
+    name: "{{ docker_package_name }}"
+    state: latest
+
+- name: Убедиться, что сервис Docker запущен и включен
+  service:
+    name: "{{ docker_service_name }}"
+    state: started
+    enabled: yes

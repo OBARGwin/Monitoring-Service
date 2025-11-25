@@ -1,0 +1,7 @@
+- hosts: fsgi
+  become: yes
+  roles:
+    - install_docker
+    - fsgi_monitor
+    - log_exporter
+    - fsgi_server

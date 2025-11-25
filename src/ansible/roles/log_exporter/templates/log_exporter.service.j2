@@ -1,0 +1,10 @@
+[Unit]
+Description=FSGI Log Exporter (Bash)
+After=network.target fsgi_monitor.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/log_exporter.sh
+
+[Install]
+WantedBy=multi-user.target

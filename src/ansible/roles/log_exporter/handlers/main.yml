@@ -1,0 +1,5 @@
+---
+- name: Restart log_exporter
+  systemd:
+    name: log_exporter
+    state: restarted

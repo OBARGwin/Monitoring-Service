@@ -10,6 +10,12 @@
     src: log_exporter.service.j2
     dest: /etc/systemd/system/log_exporter.service
 
+- name: Копируем systemd timer
+  template:
+    src: log_exporter.timer.j2
+    dest: /etc/systemd/system/log_exporter.timer
+  notify: Restart log_exporter
+
 - name: Перезагружаем systemd
   systemd:
     daemon_reload: yes
@@ -17,5 +23,11 @@
 - name: Включаем и запускаем сервис экспортера
   systemd:
     name: log_exporter
+    enabled: yes
+    state: started
+
+- name: Включаем и запускаем сервис таймера экспортера
+  systemd:
+    name: log_exporter.timer
     enabled: yes
     state: started

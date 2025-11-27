@@ -2,8 +2,6 @@
 - name: Создаем директорию для Docker (если нужно)
   file:
     path: "{{ server_path }}"
-    owner: vagrant
-    group: vagrant
     state: directory
 
 - name: Копируем Dockerfile
@@ -34,6 +32,7 @@
   template:
     src: server.service.j2
     dest: /etc/systemd/system/server.service
+  notify: Restart server
 
 - name: Перезагружаем systemd
   systemd:

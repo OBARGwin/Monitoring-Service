@@ -58,4 +58,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s \
 USER appuser
 
 # Команда запуска
-CMD spawn-fcgi -p 8080 ./fastcgi_server && nginx -g "daemon off;"
+CMD sh -c "spawn-fcgi -n -p 8080 ./fastcgi_server & nginx -g 'daemon off;'"

@@ -15,7 +15,6 @@ Vagrant.configure("2") do |config|
     fsgi_server.vm.hostname = "fsgi-server"
     fsgi_server.vm.network "private_network", ip: "192.168.56.10"
     fsgi_server.vm.network "forwarded_port", guest: 81, host: 8080   # server ui
-    fsgi_server.vm.network "forwarded_port", guest: 8081, host: 8081  # logs exporter
     fsgi_server.vm.provider "virtualbox" do |vb|
       vb.name = "fsgi_server"
     end

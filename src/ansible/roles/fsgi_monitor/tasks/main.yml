@@ -15,6 +15,7 @@
   template:
     src: fsgi_monitor.service.j2
     dest: /etc/systemd/system/fsgi_monitor.service
+  notify: Restart fsgi_monitor
 
 - name: Перезагружаем systemd
   systemd:

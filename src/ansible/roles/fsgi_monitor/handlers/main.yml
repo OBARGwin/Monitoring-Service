@@ -1,0 +1,5 @@
+---
+- name: Restart fsgi_monitor
+  systemd:
+    name: fsgi_monitor
+    state: restarted

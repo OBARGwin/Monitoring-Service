@@ -1,0 +1,5 @@
+---
+- name: Restart server
+  systemd:
+    name: server
+    state: restarted

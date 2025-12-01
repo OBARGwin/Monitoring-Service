@@ -18,5 +18,6 @@ while true; do
         systemctl restart "$SERVICE_NAME"
         log "Service $SERVICE_NAME restarted"
     fi
+    # 
     sleep "$INTERVAL"
 done

@@ -4,8 +4,8 @@
 # Настройки
 # ===============================
 LOG_FILE="/var/log/fsgi_monitor.log"
-BOT_TOKEN="8003328158:AAGp9bTzMeLMxUSqXKCYfTDOy6m-jKWDS3M"
-CHAT_ID="1023352215"
+BOT_TOKEN="800332****:AAGp9bTz****xUSqXKCYfTDOy6m-*******"
+CHAT_ID="102335****"
 # ===============================
 # Получаем последние 200 строк лога
 LOG_CONTENT=$(tail -n 200 "$LOG_FILE")
